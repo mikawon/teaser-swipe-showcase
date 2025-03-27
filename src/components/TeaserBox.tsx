@@ -4,7 +4,6 @@ import { cn } from '@/lib/utils';
 
 interface TeaserBoxProps {
   title: string;
-  description: string;
   index: number;
   imageUrl?: string;
   accentColor?: string;
@@ -12,7 +11,6 @@ interface TeaserBoxProps {
 
 const TeaserBox: React.FC<TeaserBoxProps> = ({
   title,
-  description,
   index,
   imageUrl = '/placeholder.svg',
   accentColor = 'rgba(0, 0, 0, 0.03)'
@@ -36,8 +34,8 @@ const TeaserBox: React.FC<TeaserBoxProps> = ({
           style={{ background: accentColor }}
         />
         
-        <div className="p-6 flex flex-col h-full">
-          <div className="mb-4 overflow-hidden rounded-md aspect-video bg-gray-100">
+        <div className="p-4 flex flex-col h-full">
+          <div className="mb-3 overflow-hidden rounded-md aspect-video bg-gray-100">
             <img 
               src={imageUrl} 
               alt={title}
@@ -46,29 +44,8 @@ const TeaserBox: React.FC<TeaserBoxProps> = ({
             />
           </div>
           
-          <div className="space-y-2 flex-grow content-appear">
-            <h3 className="text-lg font-medium tracking-tight">{title}</h3>
-            <p className="text-sm text-gray-500 dark:text-gray-400">{description}</p>
-          </div>
-          
-          <div className="pt-4 content-appear">
-            <div className="inline-flex items-center text-sm font-medium text-gray-900 dark:text-gray-100">
-              Learn more
-              <svg 
-                className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" 
-                xmlns="http://www.w3.org/2000/svg" 
-                fill="none" 
-                viewBox="0 0 24 24" 
-                stroke="currentColor"
-              >
-                <path 
-                  strokeLinecap="round" 
-                  strokeLinejoin="round" 
-                  strokeWidth={2} 
-                  d="M9 5l7 7-7 7" 
-                />
-              </svg>
-            </div>
+          <div className="content-appear flex-grow flex items-center justify-center">
+            <h3 className="text-lg font-medium tracking-tight text-center">{title}</h3>
           </div>
         </div>
       </div>
