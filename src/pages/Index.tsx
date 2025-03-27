@@ -55,8 +55,6 @@ const teasers = [
 ];
 
 const Index = () => {
-  const isMobile = useIsMobile();
-  
   // Split teasers into two rows
   const firstRowTeasers = teasers.slice(0, 4);
   const secondRowTeasers = teasers.slice(4);
@@ -84,15 +82,15 @@ const Index = () => {
           <h2 className="text-2xl font-medium mb-8">Featured Collection</h2>
           <TeaserSwiper 
             teasers={firstRowTeasers} 
-            itemsPerView={isMobile ? 1.2 : 4}
+            itemsPerView={2} // Only show 2 boxes in viewport
           />
         </div>
         
         <div>
-          <h2 className="text-2xl font-medium mb-8">Popular Selection</h2>
+          {/* Removed headline for second row */}
           <TeaserSwiper 
             teasers={secondRowTeasers} 
-            itemsPerView={isMobile ? 1.2 : 4}
+            itemsPerView={2} // Only show 2 boxes in viewport
           />
         </div>
       </main>

@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import TeaserBox from './TeaserBox';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -8,7 +7,6 @@ import { cn } from '@/lib/utils';
 interface Teaser {
   id: number;
   title: string;
-  description: string;
   imageUrl?: string;
   accentColor?: string;
 }
@@ -21,7 +19,7 @@ interface TeaserSwiperProps {
 
 const TeaserSwiper: React.FC<TeaserSwiperProps> = ({
   teasers,
-  itemsPerView = 4,
+  itemsPerView = 2,
   gap = 16
 }) => {
   const isMobile = useIsMobile();
@@ -33,10 +31,8 @@ const TeaserSwiper: React.FC<TeaserSwiperProps> = ({
   const [scrollLeft, setScrollLeft] = useState(0);
   const [showSwipeHint, setShowSwipeHint] = useState(true);
 
-  // Mobile adjustments
   const effectiveItemsPerView = isMobile ? Math.min(2, itemsPerView) : itemsPerView;
   
-  // Calculate dimensions
   const containerWidth = 100;
   const itemWidth = (containerWidth - (gap * (effectiveItemsPerView - 1))) / effectiveItemsPerView;
   
@@ -49,10 +45,8 @@ const TeaserSwiper: React.FC<TeaserSwiperProps> = ({
       }
     };
 
-    // Initial check
     checkScrollability();
     
-    // Hide swipe hint after some time
     const timer = setTimeout(() => {
       setShowSwipeHint(false);
     }, 5000);
@@ -73,7 +67,7 @@ const TeaserSwiper: React.FC<TeaserSwiperProps> = ({
   const scroll = (direction: 'left' | 'right') => {
     if (scrollContainerRef.current) {
       const { clientWidth } = scrollContainerRef.current;
-      const scrollAmount = clientWidth * 0.8; // Scroll 80% of the view
+      const scrollAmount = clientWidth * 0.8;
       
       scrollContainerRef.current.scrollBy({
         left: direction === 'left' ? -scrollAmount : scrollAmount,
@@ -81,11 +75,9 @@ const TeaserSwiper: React.FC<TeaserSwiperProps> = ({
       });
     }
     
-    // Hide swipe hint when user actively uses navigation
     setShowSwipeHint(false);
   };
 
-  // Mouse drag handlers
   const handleMouseDown = (e: React.MouseEvent) => {
     setIsDragging(true);
     setStartX(e.pageX - (scrollContainerRef.current?.offsetLeft || 0));
@@ -108,7 +100,6 @@ const TeaserSwiper: React.FC<TeaserSwiperProps> = ({
     }
   };
 
-  // Touch handlers
   const handleTouchStart = (e: React.TouchEvent) => {
     setIsDragging(true);
     setStartX(e.touches[0].pageX - (scrollContainerRef.current?.offsetLeft || 0));
@@ -129,7 +120,6 @@ const TeaserSwiper: React.FC<TeaserSwiperProps> = ({
 
   return (
     <div className="relative w-full">
-      {/* Navigation buttons (hidden on mobile) */}
       {!isMobile && (
         <>
           <button 
@@ -166,7 +156,6 @@ const TeaserSwiper: React.FC<TeaserSwiperProps> = ({
         </>
       )}
 
-      {/* Swipe hint for mobile users */}
       {isMobile && showSwipeHint && canScrollRight && (
         <div className="absolute right-6 top-1/2 z-10 -translate-y-1/2 flex items-center opacity-70">
           <div className="bg-white/80 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm flex items-center swipe-hint">
@@ -176,7 +165,6 @@ const TeaserSwiper: React.FC<TeaserSwiperProps> = ({
         </div>
       )}
 
-      {/* Teaser grid with horizontal scrolling */}
       <div 
         ref={scrollContainerRef}
         className={cn(
@@ -205,7 +193,6 @@ const TeaserSwiper: React.FC<TeaserSwiperProps> = ({
           >
             <TeaserBox 
               title={teaser.title}
-              description={teaser.description}
               index={index}
               imageUrl={teaser.imageUrl}
               accentColor={teaser.accentColor}
@@ -214,7 +201,6 @@ const TeaserSwiper: React.FC<TeaserSwiperProps> = ({
         ))}
       </div>
       
-      {/* Scroll indicator dots */}
       <div className="flex justify-center mt-6 gap-1.5">
         {Array.from({ length: Math.ceil(teasers.length / effectiveItemsPerView) }).map((_, i) => (
           <button
