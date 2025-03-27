@@ -55,10 +55,6 @@ const teasers = [
 ];
 
 const Index = () => {
-  // Split teasers into two rows
-  const firstRowTeasers = teasers.slice(0, 4);
-  const secondRowTeasers = teasers.slice(4);
-  
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-white to-gray-50">
       {/* Header */}
@@ -77,20 +73,12 @@ const Index = () => {
       </header>
 
       {/* Main content */}
-      <main className="flex-grow w-full max-w-7xl mx-auto px-6 md:px-10 lg:px-16 py-10 space-y-12">
+      <main className="flex-grow w-full max-w-7xl mx-auto px-6 md:px-10 lg:px-16 py-10">
         <div>
           <h2 className="text-2xl font-medium mb-8">Featured Collection</h2>
           <TeaserSwiper 
-            teasers={firstRowTeasers} 
-            itemsPerView={2} // Only show 2 boxes in viewport
-          />
-        </div>
-        
-        <div>
-          {/* Removed headline for second row */}
-          <TeaserSwiper 
-            teasers={secondRowTeasers} 
-            itemsPerView={2} // Only show 2 boxes in viewport
+            teasers={teasers} 
+            itemsPerView={2} 
           />
         </div>
       </main>
