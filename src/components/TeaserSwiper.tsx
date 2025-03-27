@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import TeaserBox from './TeaserBox';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -32,6 +33,10 @@ const TeaserSwiper: React.FC<TeaserSwiperProps> = ({
   const [showSwipeHint, setShowSwipeHint] = useState(true);
 
   const effectiveItemsPerView = isMobile ? Math.min(2, itemsPerView) : itemsPerView;
+  
+  // Split teasers into two rows
+  const firstRowTeasers = teasers.slice(0, Math.ceil(teasers.length / 2));
+  const secondRowTeasers = teasers.slice(Math.ceil(teasers.length / 2));
   
   const containerWidth = 100;
   const itemWidth = (containerWidth - (gap * (effectiveItemsPerView - 1))) / effectiveItemsPerView;
@@ -118,6 +123,12 @@ const TeaserSwiper: React.FC<TeaserSwiperProps> = ({
     setShowSwipeHint(false);
   };
 
+  // Group teaser items into pairs for the two-row layout
+  const groupedTeasers = [];
+  for (let i = 0; i < teasers.length; i += effectiveItemsPerView) {
+    groupedTeasers.push(teasers.slice(i, i + effectiveItemsPerView));
+  }
+
   return (
     <div className="relative w-full">
       {!isMobile && (
@@ -179,30 +190,33 @@ const TeaserSwiper: React.FC<TeaserSwiperProps> = ({
         onTouchEnd={handleMouseUp}
         onTouchMove={handleTouchMove}
       >
-        {teasers.map((teaser, index) => (
+        {groupedTeasers.map((group, groupIndex) => (
           <div 
-            key={teaser.id}
+            key={`group-${groupIndex}`}
             className={cn(
               "snap-start snap-always flex-shrink-0 transition-opacity duration-300",
-              "first:pl-0 last:pr-4"
+              "first:pl-0 last:pr-4 flex flex-col gap-4"
             )}
             style={{ 
               width: `${itemWidth}%`,
               scrollSnapAlign: 'start',
             }}
           >
-            <TeaserBox 
-              title={teaser.title}
-              index={index}
-              imageUrl={teaser.imageUrl}
-              accentColor={teaser.accentColor}
-            />
+            {group.map((teaser, index) => (
+              <TeaserBox 
+                key={teaser.id}
+                title={teaser.title}
+                index={index + (groupIndex * effectiveItemsPerView)}
+                imageUrl={teaser.imageUrl}
+                accentColor={teaser.accentColor}
+              />
+            ))}
           </div>
         ))}
       </div>
       
       <div className="flex justify-center mt-6 gap-1.5">
-        {Array.from({ length: Math.ceil(teasers.length / effectiveItemsPerView) }).map((_, i) => (
+        {Array.from({ length: Math.ceil(teasers.length / (effectiveItemsPerView * 2)) }).map((_, i) => (
           <button
             key={i}
             onClick={() => {
